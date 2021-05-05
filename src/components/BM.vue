@@ -17,34 +17,42 @@ export default {
         {
           field: "j",
           label: "j",
+          centered: true
         },
         {
           field: "s",
           label: "s[i]",
+          centered: true
         },
         {
           field: "d",
           label: "d",
+          centered: true
         },
         {
           field: "m",
           label: "m",
+          centered: true
         },
         {
           field: "T",
           label: "T(D)",
+          centered: true
         },
         {
           field: "C",
           label: "C(D)",
+          centered: true
         },
         {
           field: "L",
           label: "L",
+          centered: true
         },
         {
           field: "B",
           label: "B(D)",
+          centered: true
         },
       ],
     };
@@ -130,12 +138,12 @@ function Dstr(a, L) {
   for (let i = 0; i <= L; i++) {
     if (a[i]) {
       if (i === 0) {
-        result += "1" + " + "
+        result += "1" + "+"
       } else if (i === 1) {
-        result += "D" + " + "
+        result += "D" + "+"
       }
       else {
-        result += "D^" + i + " + "
+        result += "D<sup>" + i + "</sup>+"
       }
     }
   }
