@@ -80,7 +80,7 @@ export default {
       B[0] = 1;
       C[0] = 1;
       var L = 0;
-      var m = 0;
+      var m = -1;
       var d, i;
 
       for (let j = 0; j < this.inputText.length; j++) {
