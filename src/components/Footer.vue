@@ -6,10 +6,6 @@
         <a href="https://jonbgua.com" target="_blank" rel="noopener noreferrer">
           Jonbgua
         </a>
-        <span style="float: right">
-          <router-link to="/help" v-if="this.$route.path !== '/help'">帮助</router-link>
-          <router-link to="/" v-if="this.$route.path === '/help'">返回首页</router-link>
-        </span>
       </p>
     </div>
   </footer>
