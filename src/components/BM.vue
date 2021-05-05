@@ -1,5 +1,11 @@
 <template>
   <div>
+    <div class="content">
+      <ul>
+        <li>线性复杂度为 {{ this.LCOutline.slice(-1)[0] }}</li>
+        <li>线性复杂度轮廓 {{ this.LCOutline }}</li>
+      </ul>
+    </div>
     <b-table :data="tableData" :columns="columns"></b-table>
   </div>
 </template>
@@ -13,6 +19,7 @@ export default {
   data() {
     return {
       tableData: [],
+      LCOutline: [],
       columns: [
         {
           field: "j",
@@ -76,6 +83,7 @@ export default {
           B: 1,
         },
       ]
+      this.LCOutline = []
 
       var B = [];
       var T = [];
@@ -94,25 +102,35 @@ export default {
       var d, i;
 
       for (let j = 0; j < this.inputText.length; j++) {
+        // 执行上次循环所指示的 "Fake_M 需要归零"
         if (fm_flag) {
           fm_flag = false
           fm = 0
         }
+        // 计算 d = s_j XOR ...
         d = this.inputText[j];
         for (i = 1; i <= L; i++) {
           d ^= C[i] & this.inputText[j - i];
         }
+        // Fake_M += 1
         fm++
+        // 若 d ≠ 0 (即 d = 1)
         if (d == 1) {
+          // T(D) = C(D)
           for (i = 0; i < this.inputText.length; i++) {
             T[i] = C[i];
           }
+          // C(D)
           for (i = 0; (i + j - m) < this.inputText.length; i++) {
             C[i + j - m] ^= B[i];
           }
-          if (L <= (j >> 1)) {
+          // 若 L ≤ j/2
+          if (L <= (j / 2)) {
             L = j + 1 - L;
-            m = j; fm_flag = true;
+            m = j;
+
+            // Fake_M = 0, 此处不直接设为零是因为表格输出需要
+            fm_flag = true;
 
             for (i = 0; i < this.inputText.length; i++) {
               B[i] = T[i];
@@ -129,10 +147,13 @@ export default {
           L: L,
           B: Dstr(B, L),
         });
+        // 线性复杂度轮廓
+        this.LCOutline.push(L)
       }
     },
   },
 };
+// 获得形如 D^i + D^j 的字符串输出
 function Dstr(a, L) {
   var result = ""
   for (let i = 0; i <= L; i++) {

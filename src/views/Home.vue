@@ -18,7 +18,8 @@
           <b-button @click="doProcess">执行</b-button>
         </div>
         <!-- 结果 -->
-        <section class="section">
+        <section class="section" v-show="BMText">
+          <h2 class="title is-4">结果</h2>
           <BM :inputText="BMText" />
         </section>
       </div>
@@ -38,6 +39,11 @@ export default {
     return {
       inputText: "",
       BMText: ""
+    }
+  },
+  watch: {
+    inputText() {
+      this.BMText = ""
     }
   },
   methods: {
