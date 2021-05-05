@@ -54,7 +54,7 @@ export default {
 
     },
     doProcess() {
-      this.BMText = this.inputText
+      this.BMText = this.inputText.replace(/\s+/g, "")
     }
   }
 }
