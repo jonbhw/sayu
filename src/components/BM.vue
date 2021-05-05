@@ -81,13 +81,20 @@ export default {
       C[0] = 1;
       var L = 0;
       var m = -1;
+      var fm = 0; // Fake_M
+      var fm_flag = false; // Fake_M 在下一轮应该归零
       var d, i;
 
       for (let j = 0; j < this.inputText.length; j++) {
-        d = Number(this.inputText[j]);
-        for (i = 1; i < L; i++) {
-          d ^= C[i] & Number(this.inputText[j - i]);
+        if (fm_flag) {
+          fm_flag = false
+          fm = 0
         }
+        d = this.inputText[j];
+        for (i = 1; i <= L; i++) {
+          d ^= C[i] & this.inputText[j - i];
+        }
+        fm++
         if (d == 1) {
           for (i = 0; i < this.inputText.length; i++) {
             T[i] = C[i];
@@ -97,7 +104,7 @@ export default {
           }
           if (L <= (j >> 1)) {
             L = j + 1 - L;
-            m = j;
+            m = j; fm_flag = true;
 
             for (i = 0; i < this.inputText.length; i++) {
               B[i] = T[i];
@@ -108,7 +115,7 @@ export default {
           j: j,
           s: this.inputText[j],
           d: d,
-          m: m,
+          m: fm,
           T: Dstr(T, L),
           C: Dstr(C, L),
           L: L,
@@ -124,6 +131,8 @@ function Dstr(a, L) {
     if (a[i]) {
       if (i === 0) {
         result += "1" + " + "
+      } else if (i === 1) {
+        result += "D" + " + "
       }
       else {
         result += "D^" + i + " + "
