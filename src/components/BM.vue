@@ -6,7 +6,50 @@
         <li>线性复杂度轮廓 {{ this.LCOutline }}</li>
       </ul>
     </div>
-    <b-table :data="tableData" :columns="columns"></b-table>
+    <b-field>
+      <b-checkbox v-model="enableTable">显示结果表格（可能导致严重卡顿）</b-checkbox>
+    </b-field>
+    <b-collapse
+      aria-id="panel"
+      class="panel"
+      animation="slide"
+      v-model="isOpen"
+      v-if="enableTable">
+      <template #trigger>
+        <div
+          class="panel-heading"
+          role="button"
+          aria-controls="panel">
+          结果表格
+        </div>
+      </template>
+      <b-table :height="500" :data="tableData" :mobile-cards="false" :sticky-header="true" :striped="true">
+        <b-table-column field="j" label="j" v-slot="props">
+          {{ props.row.j }}
+        </b-table-column>
+        <b-table-column field="s" label="s[j]" v-slot="props">
+          {{ props.row.s }}
+        </b-table-column>
+        <b-table-column field="d" label="d" v-slot="props">
+          {{ props.row.d }}
+        </b-table-column>
+        <b-table-column field="m" label="m" v-slot="props">
+          {{ props.row.m }}
+        </b-table-column>
+        <b-table-column field="T" label="T(D)" v-slot="props">
+          <span v-html="props.row.T"></span>
+        </b-table-column>
+        <b-table-column field="C" label="C(D)" v-slot="props">
+          <span v-html="props.row.C"></span>
+        </b-table-column>
+        <b-table-column field="L" label="L" v-slot="props">
+          {{ props.row.L }}
+        </b-table-column>
+        <b-table-column field="B" label="B(D)" v-slot="props">
+          <span v-html="props.row.B"></span>
+        </b-table-column>
+      </b-table>
+    </b-collapse>
   </div>
 </template>
 
@@ -20,48 +63,8 @@ export default {
     return {
       tableData: [],
       LCOutline: [],
-      columns: [
-        {
-          field: "j",
-          label: "j",
-          centered: true
-        },
-        {
-          field: "s",
-          label: "s[i]",
-          centered: true
-        },
-        {
-          field: "d",
-          label: "d",
-          centered: true
-        },
-        {
-          field: "m",
-          label: "m",
-          centered: true
-        },
-        {
-          field: "T",
-          label: "T(D)",
-          centered: true
-        },
-        {
-          field: "C",
-          label: "C(D)",
-          centered: true
-        },
-        {
-          field: "L",
-          label: "L",
-          centered: true
-        },
-        {
-          field: "B",
-          label: "B(D)",
-          centered: true
-        },
-      ],
+      isOpen: false,
+      enableTable: false,
     };
   },
   watch: {
@@ -168,7 +171,7 @@ function Dstr(a, L) {
       }
     }
   }
-  result = result.slice(0, result.length - 3)
+  result = result.slice(0, result.length - 1)
   return result
 }
 </script>
