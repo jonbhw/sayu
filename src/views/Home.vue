@@ -10,6 +10,7 @@
             v-model="inputText"
             type="textarea"
             placeholder="待解比特串"
+            @input="BMText = ''"
           ></b-input>
         </b-field>
         <div class="buttons is-right">
@@ -40,11 +41,6 @@ export default {
       BMText: ""
     }
   },
-  watch: {
-    inputText() {
-      this.BMText = ""
-    }
-  },
   methods: {
     randomData() {
       const len = getRandomIntInclusive(1, 10)
@@ -57,7 +53,8 @@ export default {
       this.inputText = result
     },
     doProcess() {
-      this.BMText = this.inputText.replace(/\s+/g, "")
+      this.BMText = this.inputText.replace(/[^01]+/g, "")
+      this.inputText = this.BMText
     }
   }
 }
