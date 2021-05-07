@@ -2,28 +2,34 @@
   <div>
     <div class="content">
       <ul>
-        <li>线性复杂度为 {{ this.LCOutline.slice(-1)[0] }}</li>
+        <li>线性复杂度为 {{ linearComplexity }}</li>
         <li>线性复杂度轮廓 {{ this.LCOutline }}</li>
       </ul>
     </div>
     <b-field>
-      <b-checkbox v-model="enableTable">显示结果表格（可能导致严重卡顿）</b-checkbox>
+      <b-checkbox v-model="enableTable"
+        >显示结果表格（可能导致严重卡顿）</b-checkbox
+      >
     </b-field>
     <b-collapse
       aria-id="panel"
       class="panel"
       animation="slide"
       v-model="isOpen"
-      v-if="enableTable">
+      v-if="enableTable"
+    >
       <template #trigger>
-        <div
-          class="panel-heading"
-          role="button"
-          aria-controls="panel">
+        <div class="panel-heading" role="button" aria-controls="panel">
           结果表格
         </div>
       </template>
-      <b-table :height="500" :data="tableData" :mobile-cards="false" :sticky-header="true" :striped="true">
+      <b-table
+        :height="500"
+        :data="tableData"
+        :mobile-cards="false"
+        :sticky-header="true"
+        :striped="true"
+      >
         <b-table-column field="j" label="j" v-slot="props">
           {{ props.row.j }}
         </b-table-column>
@@ -36,14 +42,14 @@
         <b-table-column field="m" label="m" v-slot="props">
           {{ props.row.m }}
         </b-table-column>
+        <b-table-column field="L" label="L" v-slot="props">
+          {{ props.row.L }}
+        </b-table-column>
         <b-table-column field="T" label="T(D)" v-slot="props">
           <span v-html="props.row.T"></span>
         </b-table-column>
         <b-table-column field="C" label="C(D)" v-slot="props">
           <span v-html="props.row.C"></span>
-        </b-table-column>
-        <b-table-column field="L" label="L" v-slot="props">
-          {{ props.row.L }}
         </b-table-column>
         <b-table-column field="B" label="B(D)" v-slot="props">
           <span v-html="props.row.B"></span>
@@ -54,6 +60,8 @@
 </template>
 
 <script>
+const MAX_LINEAR_COMPLEXITY = 10000
+
 export default {
   name: "BM",
   props: {
@@ -67,10 +75,18 @@ export default {
       enableTable: false,
     };
   },
+  computed: {
+    linearComplexity() {
+      return (this.LCOutline.slice(-1)[0] <= MAX_LINEAR_COMPLEXITY) ? this.LCOutline.slice(-1)[0] : `超过 ${MAX_LINEAR_COMPLEXITY}（最大线性复杂度限制）`
+    }
+  },
   watch: {
     inputText() {
-      this.doBM()
-    }
+      this.doBM();
+    },
+  },
+  mounted() {
+    this.doBM()
   },
   methods: {
     doBM() {
@@ -85,8 +101,8 @@ export default {
           L: 0,
           B: 1,
         },
-      ]
-      this.LCOutline = []
+      ];
+      this.LCOutline = [];
 
       var B = [];
       var T = [];
@@ -107,8 +123,8 @@ export default {
       for (let j = 0; j < this.inputText.length; j++) {
         // 执行上次循环所指示的 "Fake_M 需要归零"
         if (fm_flag) {
-          fm_flag = false
-          fm = 0
+          fm_flag = false;
+          fm = 0;
         }
         // 计算 d = s_j XOR ...
         d = this.inputText[j];
@@ -116,7 +132,7 @@ export default {
           d ^= C[i] & this.inputText[j - i];
         }
         // Fake_M += 1
-        fm++
+        fm++;
         // 若 d ≠ 0 (即 d = 1)
         if (d == 1) {
           // T(D) = C(D)
@@ -124,11 +140,11 @@ export default {
             T[i] = C[i];
           }
           // C(D)
-          for (i = 0; (i + j - m) < this.inputText.length; i++) {
+          for (i = 0; i + j - m < this.inputText.length; i++) {
             C[i + j - m] ^= B[i];
           }
           // 若 L ≤ j/2
-          if (L <= (j / 2)) {
+          if (L <= j / 2) {
             L = j + 1 - L;
             m = j;
 
@@ -151,31 +167,41 @@ export default {
           B: Dstr(B, L),
         });
         // 线性复杂度轮廓
-        this.LCOutline.push(L)
+        this.LCOutline.push(L);
+        if (L > MAX_LINEAR_COMPLEXITY) {
+          this.tableData.push({
+            j: "...",
+            s: "...",
+            d: "...",
+            m: "...",
+            L: "...",
+            T: "...",
+            C: "...",
+            B: "...",
+          });
+          break;
+        }
       }
     },
   },
 };
 // 获得形如 D^i + D^j 的字符串输出
 function Dstr(a, L) {
-  var result = ""
+  var result = "";
   for (let i = 0; i <= L; i++) {
     if (a[i]) {
       if (i === 0) {
-        result += "1" + "+"
+        result += "1" + "+";
       } else if (i === 1) {
-        result += "D" + "+"
-      }
-      else {
-        result += "D<sup>" + i + "</sup>+"
+        result += "D" + "+";
+      } else {
+        result += "D<sup>" + i + "</sup>+";
       }
     }
   }
-  result = result.slice(0, result.length - 1)
-  return result
+  result = result.slice(0, result.length - 1);
+  return result;
 }
 </script>
 
-<style lang="stylus" scoped>
-
-</style>
+<style lang="stylus" scoped></style>
