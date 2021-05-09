@@ -6,6 +6,9 @@
         <a href="https://jonbgua.com" target="_blank" rel="noopener noreferrer">
           Jonbgua
         </a>
+        <span style="float: right">
+          <a href="https://aes.jonbgua.com/">Berlekamp-Massey × AES</a>
+        </span>
       </p>
     </div>
   </footer>
