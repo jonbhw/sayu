@@ -1,16 +1,16 @@
 # Sayu
 
-[Sayu](https://sayu.jonbgua.com/) 是一个使用 Berlekamp-Massey 算法求解比特串线性复杂度和联结多项式的 Web App，系《密码学导论》课程的大作业之三。
+[Sayu](https://sayu.jonbgua.com/) 是一个使用 Berlekamp-Massey 算法求解比特串线性复杂度和联结多项式的 网页应用，系《密码学导论》课程的大作业之三。
 
 
 
 ## 流程图
 
-### 主程序
+### 载入示例
 
-todo
+<img src="docs/img/Sayu-载入示例.svg" alt="Sayu-载入示例" style="zoom:50%;" />
 
-「载入示例」的随机数由 `Crypto.getRandomValues()` 函数提供，此函数可以获取符合密码学要求的安全的随机值，详见 [MDN Web Docs](https://developer.mozilla.org/zh-CN/docs/Web/API/Crypto/getRandomValues) 上的说明。
+其中，密码学安全的随机数由 `Crypto.getRandomValues()` 函数提供，详见 [MDN Web Docs](https://developer.mozilla.org/zh-CN/docs/Web/API/Crypto/getRandomValues) 上的说明。
 
 
 
@@ -48,7 +48,9 @@ PPT Page 49：`001101110`。
 
 ### 与 AES 的联动
 
-点击右下角 [Berlekamp-Massey × AES](https://aes.jonbgua.com) 链接或直接访问 https://aes.jonbgua.com 。
+本节将介绍如何进行 AES 加密并求解加密结果比特串的线性复杂度和联结多项式。为实现此目的，我们将 Sayu 的 Berlekamp-Massey 模块直接嵌入到了 Amayan 项目中。
+
+点击 Sayu 右下角的 [Berlekamp-Massey × AES](https://aes.jonbgua.com) 链接或直接访问 https://aes.jonbgua.com ，进入 Amayan 项目。
 
 ![image-20210509215050991](docs/img/image-20210509215050991.png)
 
@@ -59,3 +61,11 @@ PPT Page 49：`001101110`。
 ![image-20210509215424917](docs/img/image-20210509215424917.png)
 
 不建议点击「显示结果表格」，因单页渲染的元素过多，可能会导致浏览器假死。
+
+
+
+## 参考
+
+- [mjcross/mod2MatrixTools - GitHub](mjcross/mod2MatrixTools - GitHub)
+- [Berlekamp-Massey minimal LFSR issues - Stack OverFlow](https://stackoverflow.com/questions/50517576/berlekamp-massey-minimal-lfsr-issues)
+
